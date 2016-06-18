@@ -5,13 +5,14 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import Forecast from './Forecast';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#4D4D4D',
   },
   welcome: {
     fontSize: 20,
@@ -31,6 +32,11 @@ class WeatherProject extends Component {
     this.handleTextChange = this.handleTextChange.bind(this);
     this.state = {
       zip: '',
+      forecast: {
+        main: 'Clouds',
+        description: 'few clouds',
+        temp: 45.7,
+      },
     };
   }
 
@@ -44,8 +50,14 @@ class WeatherProject extends Component {
         <Text style={styles.welcome}>
           You input {this.state.zip}
         </Text>
+        <Forecast
+          main={this.state.forecast.main}
+          description={this.state.forecast.description}
+          temp={this.state.forecast.temp}
+        />
         <TextInput
           style={styles.input}
+          returnKeyType="go"
           onSubmitEditing={this.handleTextChange}
         />
       </View>
