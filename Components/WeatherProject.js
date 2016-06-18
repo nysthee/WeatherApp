@@ -1,35 +1,10 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from 'react-native';
-
-class WeatherProject extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
-    );
-  }
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -43,11 +18,39 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  input: {
+    fontSize: 20,
+    borderWidth: 2,
+    height: 40,
   },
 });
+
+class WeatherProject extends Component {
+  constructor(props) {
+    super(props);
+    this.handleTextChange = this.handleTextChange.bind(this);
+    this.state = {
+      zip: '',
+    };
+  }
+
+  handleTextChange(e) {
+    this.setState({ zip: e.nativeEvent.text });
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.welcome}>
+          You input {this.state.zip}
+        </Text>
+        <TextInput
+          style={styles.input}
+          onSubmitEditing={this.handleTextChange}
+        />
+      </View>
+    );
+  }
+}
 
 export default WeatherProject;
