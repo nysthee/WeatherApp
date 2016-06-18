@@ -1,0 +1,5 @@
+const config = {
+  openweathermap_api_key: '',
+};
+
+export default config;
