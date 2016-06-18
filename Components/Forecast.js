@@ -27,7 +27,7 @@ const Forecast = (props) => {
         Current conditions: {props.description}
       </Text>
       <Text style={styles.bigText}>
-        {props.temp}
+        {props.temp} ℃
       </Text>
     </View>
   );

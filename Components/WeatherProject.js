@@ -6,7 +6,9 @@ import {
   TextInput,
   View,
 } from 'react-native';
+
 import Forecast from './Forecast';
+import config from '../config';
 
 const baseFontSize = 16;
 const styles = StyleSheet.create({
@@ -57,19 +59,42 @@ class WeatherProject extends Component {
     this.handleTextChange = this.handleTextChange.bind(this);
     this.state = {
       zip: '',
-      forecast: {
-        main: 'Clouds',
-        description: 'few clouds',
-        temp: 45.7,
-      },
+      forecast: null,
     };
   }
 
-  handleTextChange(e) {
-    this.setState({ zip: e.nativeEvent.text });
+  handleTextChange(event) {
+    const zip = event.nativeEvent.text;
+    this.setState({
+      zip,
+    }, function () {
+      fetch(`http://api.openweathermap.org/data/2.5/weather?zip=${this.state.zip},be&units=metric&APPID=${config.owm_api_key}`)
+        .then(response => response.json())
+        .then((responseJSON) => {
+          this.setState({
+            forecast: {
+              main: responseJSON.weather[0].main,
+              description: responseJSON.weather[0].description,
+              temp: responseJSON.main.temp,
+            },
+          });
+        }
+      )
+      .catch((error) => {
+        console.warn(error);
+      });
+    });
   }
 
   render() {
+    let content = null;
+    if (this.state.forecast !== null) {
+      content = (<Forecast
+        main={this.state.forecast.main}
+        description={this.state.forecast.description}
+        temp={this.state.forecast.temp}
+      />);
+    }
     return (
       <View style={styles.container}>
         <Image
@@ -90,11 +115,7 @@ class WeatherProject extends Component {
                 />
               </View>
             </View>
-            <Forecast
-              main={this.state.forecast.main}
-              description={this.state.forecast.description}
-              temp={this.state.forecast.temp}
-            />
+            {content}
           </View>
         </Image>
       </View>
